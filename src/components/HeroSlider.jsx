@@ -36,8 +36,16 @@ export default function HeroSlider() {
     return () => clearInterval(timer);
   }, []);
 
+  const prevSlide = () => {
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const nextSlide = () => {
+    setCurrent((prev) => (prev + 1) % slides.length);
+  };
+
   return (
-    <section className="relative h-[90vh] overflow-hidden bg-elysian-cream">
+    <section id="hero" className="relative h-[90vh] overflow-hidden bg-elysian-cream">
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -52,7 +60,7 @@ export default function HeroSlider() {
             className="w-full h-full object-cover"
           />
 
-          {/* Dark Overlay (using elysian-burgundy tone) */}
+          {/* Dark Overlay */}
           <div className="absolute inset-0 bg-black/70" />
 
           {/* Content */}
@@ -74,12 +82,18 @@ export default function HeroSlider() {
         </div>
       ))}
 
-      {/* Controls */}
-      <button className="absolute left-4 top-1/2 -translate-y-1/2 bg-elysian-burgundy/70 text-elysian-cream p-3 rounded-full hover:bg-elysian-burgundy">
+      {/* Controls - hide on small screens */}
+      <button
+        onClick={prevSlide}
+        className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 bg-elysian-burgundy/70 text-elysian-cream p-3 rounded-full hover:bg-elysian-burgundy"
+      >
         <ChevronLeft />
       </button>
 
-      <button className="absolute right-4 top-1/2 -translate-y-1/2 bg-elysian-burgundy/70 text-elysian-cream p-3 rounded-full hover:bg-elysian-burgundy">
+      <button
+        onClick={nextSlide}
+        className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 bg-elysian-burgundy/70 text-elysian-cream p-3 rounded-full hover:bg-elysian-burgundy"
+      >
         <ChevronRight />
       </button>
 
@@ -90,9 +104,7 @@ export default function HeroSlider() {
             key={index}
             onClick={() => setCurrent(index)}
             className={`w-3 h-3 rounded-full ${
-              index === current
-                ? "bg-elysian-pink"
-                : "bg-elysian-cream/50"
+              index === current ? "bg-elysian-pink" : "bg-elysian-cream/50"
             }`}
           />
         ))}

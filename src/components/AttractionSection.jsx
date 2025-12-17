@@ -26,7 +26,7 @@ export default function AttractionSection() {
   ];
 
   return (
-    <section className="bg-elysian-cream py-20">
+    <section id="about" className="bg-elysian-cream py-20">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-elysian-burgundy">
           Why Shop With Us

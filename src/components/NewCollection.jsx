@@ -24,7 +24,7 @@ export default function NewCollection() {
   const tabs = ["Men", "Women", "Accessories"];
 
   return (
-    <section className="py-20 bg-elysian-cream">
+    <section id="collections" className="py-20 bg-elysian-cream">
       <div className="max-w-7xl mx-auto px-4 space-y-16">
 
         {/* Row 1: Left text, Right images */}
