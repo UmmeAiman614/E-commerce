@@ -1,53 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, ShoppingCart, Menu, X } from "lucide-react";
 import logo from "../assets/SMM-logo.png";
 
 export default function Header() {
-  const [cartCount, setCartCount] = useState(0);
+  const [cartCount] = useState(2);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showTopHeader, setShowTopHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const navLinks = [
-    { name: "Home", href: "#" },
-    { name: "New Arrivals", href: "#" },
-    { name: "Collections", href: "#" },
-    { name: "About", href: "#" },
-    { name: "Contact", href: "#" },
+    { name: "Home", href: "#hero" },
+    { name: "About", href: "#about" },
+    { name: "New Arrivals", href: "#new-arrivals" },
+    { name: "Collections", href: "#collections" },
+    { name: "Blog", href: "#blog" },
+    { name: "Contact", href: "#contact" },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowTopHeader(window.scrollY < lastScrollY || window.scrollY < 10);
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <header className="bg-elysian-cream shadow-sm">
-      {/* Top Header */}
-      <div className="border-b border-elysian-burgundy/10">
+    <header className="fixed top-0 left-0 w-full z-50">
+      {/* TOP HEADER: LOGO + SEARCH + CART */}
+      <div
+        className={`bg-elysian-cream border-b border-elysian-burgundy/10 transition-all duration-300 overflow-hidden ${
+          showTopHeader ? "max-h-40" : "max-h-14"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            
-            {/* Logo - ALWAYS LEFT */}
-            <div className="flex items-center">
-              <img
-                src={logo}
-                alt="Elysian Wear Brand"
-                className="h-40 w-auto"
-              />
-            </div>
+            {/* Logo */}
+            <img
+              src={logo}
+              alt="Logo"
+              className="h-20 sm:h-24 lg:h-28 xl:h-32 w-auto"
+            />
 
-            {/* Desktop Search & Cart */}
+            {/* Desktop Search + Cart */}
             <div className="hidden md:flex items-center space-x-4">
-              <div className="relative">
+              <div className="relative w-full max-w-[320px]">
                 <input
                   type="text"
                   placeholder="Search products..."
-                  className="w-80 px-4 py-2 pr-10 rounded-full border-2 border-elysian-burgundy/20"
+                  className="w-full px-4 py-2 pr-10 rounded-full border-2 border-elysian-burgundy/30 text-elysian-burgundy placeholder-elysian-burgundy"
                 />
                 <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-elysian-burgundy" />
               </div>
 
-              <button className="relative p-2">
+              <button className="relative">
                 <ShoppingCart className="w-6 h-6 text-elysian-burgundy" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-elysian-burgundy text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                    {cartCount}
-                  </span>
-                )}
+                <span className="absolute -top-1 -right-1 bg-elysian-burgundy text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  {cartCount}
+                </span>
               </button>
             </div>
 
@@ -56,27 +68,26 @@ export default function Header() {
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-elysian-burgundy" />
-              ) : (
-                <Menu className="w-6 h-6 text-elysian-burgundy" />
-              )}
+              {mobileMenuOpen ? <X className="text-elysian-burgundy" /> : <Menu className="text-elysian-burgundy" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Desktop Navigation */}
-      <div className="hidden md:block">
-        <nav className="flex justify-center space-x-8 h-14 items-center">
-          {navLinks.map((link, index) => (
+      {/* NAV LINKS (Desktop only) */}
+      <div
+        className={`hidden md:flex border-b border-elysian-burgundy bg-elysian-cream transition-all ${
+          showTopHeader ? "relative" : "fixed top-0 left-0 w-full"
+        } z-50`}
+      >
+        <nav className="flex items-center justify-center space-x-8 h-14 w-full">
+          {navLinks.map((link, i) => (
             <a
-              key={index}
+              key={i}
               href={link.href}
-              className="text-elysian-burgundy font-medium hover:text-elysian-pink transition relative group"
+              className="font-medium text-base tracking-wide text-elysian-burgundy hover:text-elysian-pink transition-colors"
             >
               {link.name}
-              <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-elysian-burgundy group-hover:w-full transition-all"></span>
             </a>
           ))}
         </nav>
@@ -84,38 +95,32 @@ export default function Header() {
 
       {/* MOBILE MENU */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-elysian-burgundy/10 bg-elysian-cream">
+        <div className="md:hidden bg-elysian-cream shadow-lg w-full overflow-x-hidden z-40">
           <div className="px-4 py-4 space-y-4">
-
-            {/* Mobile Search */}
+            {/* Search */}
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search products..."
-                className="w-full px-4 py-2 pr-10 rounded-full border-2 border-elysian-burgundy/20"
+                className="w-full px-4 py-2 pr-10 rounded-full border-2 border-elysian-burgundy/30 text-elysian-burgundy placeholder-elysian-burgundy"
               />
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-elysian-burgundy" />
             </div>
 
-            {/* Mobile Cart */}
-            <button className="flex items-center justify-between w-full py-2 text-elysian-burgundy font-medium">
-              <span>Cart</span>
-              <div className="relative">
-                <ShoppingCart className="w-6 h-6" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-elysian-burgundy text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                    {cartCount}
-                  </span>
-                )}
-              </div>
+            {/* Cart */}
+            <button className="flex items-center justify-between w-full font-medium text-elysian-burgundy">
+              Cart
+              <span className="bg-elysian-burgundy text-white px-2 rounded">
+                {cartCount}
+              </span>
             </button>
 
-            {/* Mobile Links */}
-            {navLinks.map((link, index) => (
+            {/* Links */}
+            {navLinks.map((link, i) => (
               <a
-                key={index}
+                key={i}
                 href={link.href}
-                className="block text-elysian-burgundy py-2 font-medium"
+                className="block py-2 font-medium text-elysian-burgundy hover:text-elysian-pink"
               >
                 {link.name}
               </a>

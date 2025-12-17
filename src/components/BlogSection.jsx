@@ -41,7 +41,7 @@ const blogs = [
 
 export default function BlogSection() {
   return (
-    <section className="py-20 bg-elysian-cream">
+    <section id="blog" className="py-20 bg-elysian-cream">
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Heading */}
         <h2 className="text-3xl md:text-4xl font-bold text-elysian-burgundy text-center mb-12">

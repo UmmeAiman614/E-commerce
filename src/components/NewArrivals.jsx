@@ -39,7 +39,7 @@ export default function NewArrivals() {
   const [activeTab, setActiveTab] = useState("Men");
 
   return (
-    <section className="bg-elysian-cream py-20">
+    <section id="new-arrivals" className="bg-elysian-cream py-20">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* Heading */}
@@ -48,21 +48,22 @@ export default function NewArrivals() {
         </h2>
 
         {/* Tabs */}
-        <div className="flex justify-center gap-6 mt-8">
-          {Object.keys(productsData).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-2 rounded-full font-medium transition ${
-                activeTab === tab
-                  ? "bg-elysian-burgundy text-elysian-cream"
-                  : "border border-elysian-burgundy text-elysian-burgundy"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+        <div className="flex justify-center flex-wrap gap-3 mt-8">
+  {Object.keys(productsData).map((tab) => (
+    <button
+      key={tab}
+      onClick={() => setActiveTab(tab)}
+      className={`px-4 sm:px-6 py-2 rounded-full font-medium transition text-sm sm:text-base ${
+        activeTab === tab
+          ? "bg-elysian-burgundy text-elysian-cream"
+          : "border border-elysian-burgundy text-elysian-burgundy"
+      }`}
+    >
+      {tab}
+    </button>
+  ))}
+</div>
+
 
         {/* Products Grid */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
